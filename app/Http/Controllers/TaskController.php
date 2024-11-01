@@ -9,10 +9,10 @@ use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
-    public function __construct()
-    {
-        $this->authorizeResource(Task::class, 'task');
-    }
+    // public function __construct()
+    // {
+    //     $this->authorizeResource(Task::class, 'task');
+    // }
 
     /**
      * Display a listing of the resource.
@@ -36,18 +36,13 @@ class TaskController extends Controller
      */
     public function store(StoreTaskRequest $request)
     {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'desc' => 'nullable|string',
-            'status' => 'required|string|max:255',
-            'due_date' => 'nullable|date'
-        ]);
+        // return $request;
 
         // Add user_id to the validated data
-        $validated['user_id'] = Auth::id();
-
+        $request['user_id'] = Auth::id();
+        
         // Create the task using Task::create instead of the relationship
-        Task::create($validated);
+        Task::create($request->all());
 
         return redirect()->route('tasks.index')
             ->with('success', 'Task created successfully');

@@ -11,9 +11,13 @@ Route::get('/', function () {
 });
 
 Route::resource('users', UserController::class);
-// Auth::routes();
+Auth::routes();
+
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::middleware(['auth'])->group(function () {
     Route::resource('tasks', TaskController::class);
+});
+Route::get('csrf', function () {
+    return csrf_token();
 });
